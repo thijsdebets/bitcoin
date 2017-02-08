@@ -4,6 +4,8 @@
 # 1 sensor with name BitcoinValue and 1 sensor with name BitcoinWallet
 # Enter amount of bitcoins in your wallet here:
 number='0.09372178'
+# SET the required currency: USD, GBP, EUR
+currency="EUR"
 
 # enter BitcoinValue Domoticz DeviceIdx:
 bitcoinvalueidx=318
@@ -16,7 +18,7 @@ bitcoinwalletidx=317
 # */15 * * * * sleep $(expr $RANDOM \% 600); /home/pi/domoticz/scripts/bitcoin/bitcoin.sh 2>&1
 
 
-bitcoin=$(curl -s http://api.coindesk.com/v1/bpi/currentprice.json | sed 's/,/\n/g' | grep -A2 EUR | grep rate | cut -d'"' -f4)
+bitcoin=$(curl -s http://api.coindesk.com/v1/bpi/currentprice.json | sed 's/","/\n/g' | grep -A2 $currency | grep 'rate"' | cut -d'"' -f3)
 echo $bitcoin
 wallet=$(awk "BEGIN {print $number*$bitcoin}")
 echo $wallet
